@@ -2,9 +2,16 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 from uuid import uuid4, UUID
+import os
 
 app = FastAPI()
-
+@app.get("/env")
+def read_env():
+    in_docker = os.path.exists('/.dockerenv')
+    return {"running_in_docker": in_docker}
+@app.get("/")
+def root():
+    return {"message": "Welcome to the Product API!"}
 # In-memory DB simulation
 products_db = {}
 
